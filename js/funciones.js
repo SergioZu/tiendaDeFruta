@@ -24,15 +24,16 @@ function almacen(num) {
 
 function enviar() {
     divEscribir = document.getElementById("final");
-    divEscribir = "";
+    divEscribir.innerHTML = "";
     for (var i = 0; i < 10; i++) {
         if (cantidadFruta[i] != 0) {
             divEscribir.innerHTML += "<p>" + nombrefruta[i] + " --- " + cantidadFruta[i] + "Kilo</p>";
         }
-
+        cantidadFruta[i] = 0;
     }
     divEscribir.innerHTML += "<p> Precio Total: " + total + "Kilo</p>";
     divEscribir.innerHTML += "<p> Precio Medio:" + parseInt(total / aux) + "€</p>";
+
     total = 0;
     aux = 0;
 }
