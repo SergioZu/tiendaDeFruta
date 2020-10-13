@@ -13,8 +13,7 @@ function almacen(num) {
         if (i == num) {
             aux++;
             cantidadFruta[i]++;
-            precioTotal[i] = parseFloat(cantidadFruta[i]) * parseFloat(precioFruta[i]);
-            total += parseFloat(precioTotal[i]);
+            precioTotal[i] = cantidadFruta[i] * precioFruta[i];
         }
     }
 
@@ -30,6 +29,8 @@ function enviar() {
             divEscribir.innerHTML += "<p>" + nombrefruta[i] + " --- " + cantidadFruta[i] + "Kilo</p>";
         }
         cantidadFruta[i] = 0;
+        total += precioTotal[i];
+        precioTotal[i] = 0;
     }
     divEscribir.innerHTML += "<p> Precio Total: " + total + "Kilo</p>";
     divEscribir.innerHTML += "<p> Precio Medio:" + parseInt(total / aux) + "€</p>";
