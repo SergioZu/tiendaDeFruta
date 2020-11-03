@@ -89,7 +89,7 @@ function enviar() {
        
     }
     divEscribir.innerHTML += "<p> Precio Total: " + total.toFixed(2) + " Kilo</p>";
-    divEscribir.innerHTML += "<p> Precio Medio:" + (total / aux).toFixed(2) + "€</p>";
+    divEscribir.innerHTML += "<p> Precio Medio:" + (total / aux).toFixed(3) + "€</p>";
 
     total = 0;
     aux = 0;
