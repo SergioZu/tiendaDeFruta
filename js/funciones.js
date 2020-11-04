@@ -6,113 +6,125 @@ var conservaFruta = new Array(false, true, true, true, true, false, true, false,
 var nombrefruta = new Array("Platano", "Manzana", "Pera", "Sandia", "Melon", "Kiwi", "Naranja", "Pomelo", "Melocoton", "Cereza");
 
 
-var almacenObjeto=new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+var almacenObjeto = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 var cantidadFruta = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 var precioTotal = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 //Clases requeridas para la fruta, la cantidad y el precio;
-class Fruta{
-    constructor(nombre,precio){
-        this.nombre=nombre;
-        this.precio=precio;
-        this.cantidad=0;
+class Fruta {
+    constructor(nombre, precio) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.cantidad = 0;
     }
 }
 
-class FrutaVerano extends Fruta{
-    constructor(nombre,precio,proximidad,region){
-           super(nombre,precio);
-           this.proximidad=proximidad;
-           this.region=region;
+class FrutaVerano extends Fruta {
+    constructor(nombre, precio, proximidad, region) {
+        super(nombre, precio);
+        this.proximidad = proximidad;
+        this.region = region;
     }
 }
 
-class FrutaInvierno extends Fruta{
-    constructor(nombre,precio,conserva){
-        super(nombre,precio);
-        this.conserva=conserva;
- }
+class FrutaInvierno extends Fruta {
+    constructor(nombre, precio, conserva) {
+        super(nombre, precio);
+        this.conserva = conserva;
+    }
 }
 
 
 
 //variables auxiliares
 var total = 0;
-var aux=0;
+var aux = 0;
 var divEscribir;
-
+var permitir = false;
 
 //Ejercicio
-
+//funcion que me permite saber que imagen ha sido pulsada y gracias a la posicion, creo el objeto con los datos necesarios
 function almacen(num) {
     for (var i = 0; i < 10; i++) {
         if (i == num) {
-            if(almacenObjeto[i]==0 && i%2==0){
-                let frutaV=new FrutaVerano();
-                frutaV.nombre=nombrefruta[i];
-                frutaV.precio=precioFruta[i];
-                frutaV.proximidad=proximidadFruta[i];
-                frutaV.region=regionFruta[i];
-                almacenObjeto[i]=frutaV;
+            if (almacenObjeto[i] == 0 && i % 2 == 0) { //si es par es de un tipo y si no de otro
+                let frutaV = new FrutaVerano();
+                frutaV.nombre = nombrefruta[i];
+                frutaV.precio = precioFruta[i];
+                frutaV.proximidad = proximidadFruta[i];
+                frutaV.region = regionFruta[i];
+                almacenObjeto[i] = frutaV;
 
-            }else if(almacenObjeto[i]==0 && i%2!=0){
-                let frutaI=new FrutaInvierno();
-                frutaI.nombre=nombrefruta[i];
-                frutaI.precio=precioFruta[i];
-                almacenObjeto[i]=frutaI;
+            } else if (almacenObjeto[i] == 0 && i % 2 != 0) {
+                let frutaI = new FrutaInvierno();
+                frutaI.nombre = nombrefruta[i];
+                frutaI.precio = precioFruta[i];
+                almacenObjeto[i] = frutaI;
 
             }
-            cantidad(num);
+            cantidad(num); //metodo que verifica si los kilos estan bien añadidos, si lo estan añado los kilos al objeto
             precioTotal[i] = almacenObjeto[i].cantidad * almacenObjeto[i].precio;
         }
     }
 
 }
 
-function cantidad(num){
-    almacenObjeto[num].cantidad+=parseInt( prompt("Dime la cantidad"));
-}
-
-
-
-function enviar() {
-    divEscribir = document.getElementById("final");
-    divEscribir.innerHTML = "";
-    divEscribir.innerHTML +=new Date()
-    for (var i = 0; i < 10; i++) {
-        if (almacenObjeto[i] != 0) {
-            divEscribir.innerHTML += "<p>" + almacenObjeto[i].nombre + " --- " + almacenObjeto[i].cantidad + " Kilo"+ " --- "+almacenObjeto[i].precio.toFixed(2)+ "€ "+ " --- "+(almacenObjeto[i].cantidad*almacenObjeto[i].precio).toFixed(2)+ "€ </p>";
-            total += precioTotal[i]
-            aux+=almacenObjeto[i].cantidad;
-            console.log(aux);
-        }
-       
+function cantidad(num) {
+    var cantidadP;
+    cantidadP = prompt("Dime la cantidad");
+    console.log(cantidadP);
+    if (cantidadP == "" || Number(cantidadP) < 1 || Number.isInteger(Number(cantidadP)) == false) {
+        alert("No has introducido un numero entero")
+    } else {
+        permitir = true;
+        almacenObjeto[num].cantidad += parseInt(cantidadP);
     }
-    divEscribir.innerHTML += "<p> Precio Total: " + total.toFixed(2) + " Kilo</p>";
-    divEscribir.innerHTML += "<p> Precio Medio:" + (total / aux).toFixed(3) + "€</p>";
 
-    total = 0;
-    aux = 0;
 
-    ventana()
 }
 
-function ventana(){
-    var texto="";
-    for (var i = 0; i < 10; i++) {
-        if ( almacenObjeto[i]!=0 && i%2==0) {
-            if(almacenObjeto[i].proximidad==true){
-               texto+=  " Las "+almacenObjeto[i].nombre+" son fruta de verano, de proximidad y de "+almacenObjeto[i].region+"\n";
-            }else{
-                texto+= " Las "+almacenObjeto[i].nombre+" son fruta de verano,no de proximidad y de "+almacenObjeto[i].region+"\n";
+
+//funcion que me activa el boton cuando el cliente ha acabado de comprar,muestra todos los valores en el div de abajo, crea una ventana externa con datos de la fruta y genera el timer para reiniciar todo
+function enviar() {
+    if (permitir) {
+        divEscribir = document.getElementById("final");
+        divEscribir.innerHTML = "";
+        divEscribir.innerHTML += new Date()
+        for (var i = 0; i < 10; i++) {
+            if (almacenObjeto[i] != 0) {
+                divEscribir.innerHTML += "<p>" + almacenObjeto[i].nombre + " --- " + almacenObjeto[i].cantidad + " Kilo" + " --- " + almacenObjeto[i].precio.toFixed(2) + "€ " + " --- " + (almacenObjeto[i].cantidad * almacenObjeto[i].precio).toFixed(2) + "€ </p>";
+                total += precioTotal[i]
+                aux += almacenObjeto[i].cantidad;
+                console.log(aux);
             }
-        }else if(almacenObjeto[i]!=0 && i%2!=0){
-            if(almacenObjeto[i].conserva==true){
-                texto+= " Las "+almacenObjeto[i].nombre+ "son frutas de inverno y es recomendable conservarlas en fuera de la nevera "+"\n"
-           }else{
-            texto+= " Las "+almacenObjeto[i].nombre+ "son frutas de inverno y no es recomendable conservarlas en fuera de la nevera "+"\n"
-           }
-            
+
+        }
+        divEscribir.innerHTML += "<p> Precio Total: " + total.toFixed(2) + " Kilo</p>";
+        divEscribir.innerHTML += "<p> Precio Medio:" + (total / aux).toFixed(3) + "€</p>";
+
+        total = 0;
+        aux = 0;
+
+        ventana()
+    }
+}
+
+function ventana() {
+    var texto = "";
+    for (var i = 0; i < 10; i++) {
+        if (almacenObjeto[i] != 0 && i % 2 == 0) {
+            if (almacenObjeto[i].proximidad == true) {
+                texto += " Las " + almacenObjeto[i].nombre + " son fruta de verano, de proximidad y de " + almacenObjeto[i].region + "\n";
+            } else {
+                texto += " Las " + almacenObjeto[i].nombre + " son fruta de verano,no de proximidad y de " + almacenObjeto[i].region + "\n";
+            }
+        } else if (almacenObjeto[i] != 0 && i % 2 != 0) {
+            if (almacenObjeto[i].conserva == true) {
+                texto += " Las " + almacenObjeto[i].nombre + "son frutas de inverno y es recomendable conservarlas en fuera de la nevera " + "\n"
+            } else {
+                texto += " Las " + almacenObjeto[i].nombre + "son frutas de inverno y no es recomendable conservarlas en fuera de la nevera " + "\n"
+            }
+
         }
     }
     alert(texto);
